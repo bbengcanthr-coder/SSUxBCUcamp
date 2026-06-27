@@ -2,113 +2,220 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>ฐานทัพขนมของค่ายขอนแก่น</title>
+  
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Anuphan&display=swap');
-    * { box-sizing: border-box; user-select: none; }
-    body {
-      font-family: 'Anuphan', sans-serif;
-      background: #FFFFFF;
-      margin: 0; padding: 15px;
-      display: flex; flex-direction: column; align-items: center;
+    @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@400;600&display=swap');
+    
+    * { 
+      box-sizing: border-box; 
+      user-select: none; 
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      margin: 0; 
+      padding: 0;
     }
 
-    h1 { text-align: center; font-size: 1.4rem; }
+    body {
+      font-family: 'Anuphan', sans-serif;
+      /* พื้นหลังสีขาว ลายจุดสีดำเล็กๆ ตามที่ต้องการ */
+      background-color: #FFFFFF;
+      background-image: radial-gradient(#ffffff 1px, transparent 1px);
+      background-size: 14px 14px;
+      
+      display: flex; 
+      flex-direction: column; 
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 15px;
+      overflow-x: hidden;
+    }
+
+    /* ส่วนหัวและคำอธิบาย */
+    .header-container {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    h1 { 
+      font-size: 1.5rem; 
+      font-weight: 600;
+      color: #333333;
+      margin-bottom: 5px;
+    }
+
+    .description {
+      font-size: 0.95rem;
+      color: #666666;
+      font-weight: 400;
+    }
+
+    /* พื้นที่สำหรับจับภาพรวมเพื่อบันทึก */
+    #capture-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      border-radius: 24px;
+      background: transparent; /* ไม่มีกรอบ ไม่มีพื้นหลังทึบ */
+    }
 
     #plate {
-      width: 80vw; max-width: 350px;
-      height: 80vw; max-height: 350px;
+      width: 85vw; 
+      max-width: 320px;
+      height: 85vw; 
+      max-height: 320px;
       background: url('ฐาน.png') center/contain no-repeat;
-      position: relative; border-radius: 50%; margin: 20px 0;
+      position: relative; 
+      margin: 10px 0;
     }
 
     .snack-img {
-      width: 80px; height: 80px;
-      background-size: contain; background-repeat: no-repeat;
-      position: absolute; cursor: grab;
+      width: 70px; 
+      height: 70px;
+      background-size: contain; 
+      background-position: center;
+      background-repeat: no-repeat;
+      position: absolute; 
+      cursor: grab;
+      filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
     }
 
+    .snack-img:active {
+      cursor: grabbing;
+    }
+
+    /* โซนปุ่มตัวอักษร */
     .buttons {
-      display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; max-width: 360px;
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 8px; 
+      justify-content: center; 
+      width: 100%;
+      max-width: 360px;
+      margin-top: 15px;
     }
 
-    button {
-      padding: 6px 0;
-      width: 32px; height: 32px;
+    /* ออกแบบปุ่มให้ดูนุ่มนวล ไม่มีขอบแข็ง */
+    button.letter-btn {
+      width: 36px; 
+      height: 36px;
       font-size: 16px;
-      border: none; border-radius: 6px;
-      background: #9DCAEB;
+      font-family: inherit;
+      font-weight: 600;
+      color: #444444;
+      border: none; 
+      border-radius: 50%;
+      background: #F0F4F8; /* สีพาสเทลอ่อนๆ สบายตา */
       cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* ใช้เงาบางๆ แทนเส้นขอบ */
+      transition: transform 0.1s ease, background 0.2s ease;
     }
 
-    button:hover { background: #78A3D4; }
+    button.letter-btn:active { 
+      transform: scale(0.9); 
+      background: #E2E8F0;
+    }
+
+    /* โซนปุ่มจัดการ (ลบ/บันทึก) */
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .action-btn {
+      border: none; 
+      padding: 10px 24px; 
+      border-radius: 30px; /* ทรงแคปซูลนุ่มๆ */
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.1s ease;
+    }
+
+    .action-btn:active {
+      transform: scale(0.95);
+    }
 
     #delete-button {
-      background: #C3EEFA; color: white; padding: 6px 14px; margin-top: 10px;
-      border-radius: 8px;
+      background: #FFF0F0; 
+      color: #E53E3E;
     }
 
+    #save-button {
+      background: #F0FFF4; 
+      color: #38A169;
+    }
+
+    /* โซนแสดงขนมที่กดเลือก */
     .snack-area {
-      display: flex; flex-wrap: wrap; justify-content: center;
-      gap: 8px; margin-top: 10px;
+      display: flex; 
+      flex-wrap: wrap; 
+      justify-content: center;
+      gap: 10px; 
+      margin-top: 15px;
+      min-height: 80px;
     }
 
     .snack-choice {
-      width: 70px; height: 70px;
-      background-size: contain; background-repeat: no-repeat;
+      width: 65px; 
+      height: 65px;
+      background-size: contain; 
+      background-position: center;
+      background-repeat: no-repeat;
       cursor: grab;
+      filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.1));
     }
   </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://bernardo-castilho.github.io/DragDropTouch/DragDropTouch.js"></script>
 </head>
 <body>
-  <h1>ฐานทัพขนมของค่ายขอนแก่น</h1>
-  <div id="plate" ondragover="event.preventDefault()" ondrop="drop(event)"></div>
+  
+  <div class="header-container">
+    <h1>ฐานทัพขนมของค่ายขอนแก่น</h1>
+    <p class="description">กดตามชื่อตัวอักษรของคุณ</p>
+  </div>
+
+  <div id="capture-area">
+    <div id="plate" ondragover="event.preventDefault()" ondrop="drop(event)"></div>
+  </div>
 
   <div class="buttons" id="buttons-container"></div>
-  <button id="delete-button">ลบ</button>
+  
+  <div class="action-buttons">
+    <button class="action-btn" id="delete-button">ลบ</button>
+    <button class="action-btn" id="save-button">บันทึกภาพ</button>
+  </div>
+
   <div class="snack-area" id="snack-area"></div>
 
   <script>
     const snackImages = {
-      A: "A.png", 
-      B: "B.png", 
-      C: "C.png", 
-      D: "D.png", 
-      E: "E.png", 
-      F: "F.png", 
-      G: "G.png", 
-      H: "H.png", 
-      I: "I.png", 
-      J: "J.png", 
-      K: "K.png", 
-      L: "L.png", 
-      M: "M.png", 
-      N: "N.png", 
-      O: "O.png",
-      P: "P.png", 
-      Q: "Q.png", 
-      R: "R.png", 
-      S: "S.png", 
-      T: "T.png", 
-      U: "U.png", 
-      V: "V.png", 
-      W: "W.png", 
-      X: "X.png", 
-      Y: "Y.png", 
-      Z: "Z.png"
+      A: "A.png", B: "B.png", C: "C.png", D: "D.png", E: "E.png", 
+      F: "F.png", G: "G.png", H: "H.png", I: "I.png", J: "J.png", 
+      K: "K.png", L: "L.png", M: "M.png", N: "N.png", O: "O.png",
+      P: "P.png", Q: "Q.png", R: "R.png", S: "S.png", T: "T.png", 
+      U: "U.png", V: "V.png", W: "W.png", X: "X.png", Y: "Y.png", Z: "Z.png"
     };
 
     const buttonsContainer = document.getElementById("buttons-container");
     const snackArea = document.getElementById("snack-area");
     const plate = document.getElementById("plate");
     const deleteButton = document.getElementById("delete-button");
+    const saveButton = document.getElementById("save-button");
     const snacksOnPlate = [];
 
     // สร้างปุ่มตัวอักษร
     Object.keys(snackImages).forEach(letter => {
       const btn = document.createElement("button");
       btn.textContent = letter;
+      btn.className = "letter-btn";
       btn.onclick = () => createSnackChoice(letter);
       buttonsContainer.appendChild(btn);
     });
@@ -135,6 +242,8 @@
       const letter = e.dataTransfer.getData("letter");
       const existingId = e.dataTransfer.getData("id");
 
+      if (!letter) return; // ป้องกันข้อผิดพลาดหากลากสิ่งอื่นมา
+
       let snack;
       if (existingId) {
         snack = document.getElementById(existingId);
@@ -150,14 +259,37 @@
         snacksOnPlate.push(snack);
       }
 
+      // คำนวณตำแหน่งให้สัมพันธ์กับจานเมื่อมีการลากวาง
       const plateRect = plate.getBoundingClientRect();
-      snack.style.left = (e.clientX - plateRect.left - 40) + "px";
-      snack.style.top = (e.clientY - plateRect.top - 40) + "px";
+      
+      // ปรับจุดกึ่งกลางของภาพให้อยู่ตรงกับตำแหน่งที่ปล่อยนิ้ว/เมาส์
+      let dropX = e.clientX || (e.changedTouches ? e.changedTouches[0].clientX : 0);
+      let dropY = e.clientY || (e.changedTouches ? e.changedTouches[0].clientY : 0);
+
+      snack.style.left = (dropX - plateRect.left - 35) + "px"; 
+      snack.style.top = (dropY - plateRect.top - 35) + "px";
     }
 
+    // ฟังก์ชันปุ่มลบ
     deleteButton.onclick = () => {
       const last = snacksOnPlate.pop();
       if (last) last.remove();
+    };
+
+    // ฟังก์ชันบันทึกภาพ (แปลง div เป็นรูปภาพ)
+    saveButton.onclick = () => {
+      const captureTarget = document.getElementById("capture-area");
+      
+      // ซ่อนเงาชั่วคราวก่อนจับภาพเพื่อความคมชัดหากต้องการ หรือปล่อยไว้ตามการออกแบบ
+      html2canvas(captureTarget, {
+        backgroundColor: null, // ทำให้พื้นหลังโปร่งใสตามความสวยงาม
+        scale: 2 // เพิ่มความคมชัด
+      }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "My-Snack-Base.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
     };
   </script>
 </body>
